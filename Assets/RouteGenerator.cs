@@ -8,21 +8,14 @@ public class RouteGenerator : MonoBehaviour
 {
     [SerializeField] private BoxCollider tank;
     [SerializeField] private Transform startTransform;
-    [SerializeField] private int routesUsed = 2;
     private FishController fishController;
-    private Transform[] routePoints = new Transform[6];
+    private Transform[] routePoints = new Transform[12];
 
-    private Vector3[] edgePositions;
-    private Vector3 maxOverPos;
-    private Vector3 minOverPos;
-    private Vector3 maxUnderPos;
-    private Vector3 minUnderPos;
-    private Vector3 maxDistancePos;
 
     private void Start()
     {
         fishController = GetComponent<FishController>();
-        routePoints = new Transform[6];
+        routePoints = new Transform[12];
     }
 
     private void Update()
@@ -33,7 +26,7 @@ public class RouteGenerator : MonoBehaviour
         }
     }
 
-    private void GenerateRoute(Vector3 startPos)
+    public void GenerateRoute(Vector3 startPos)                                             //Chiama questa
     {
         for (int i = 0; i < routePoints.Length; i++)
         {
@@ -48,16 +41,16 @@ public class RouteGenerator : MonoBehaviour
 
         fishController.routesToFollow[0].p1 = routePoints[0].position;
         fishController.routesToFollow[0].p2 = routePoints[1].position;
-        fishController.routesToFollow[0].p3 = routePoints[1].position;
-        fishController.routesToFollow[0].p4 = routePoints[2].position;
-        fishController.routesToFollow[1].p1 = routePoints[2].position;
-        fishController.routesToFollow[1].p2 = routePoints[3].position;
-        fishController.routesToFollow[1].p3 = routePoints[3].position;
-        fishController.routesToFollow[1].p4 = routePoints[4].position;
-        fishController.routesToFollow[2].p1 = routePoints[4].position;
-        fishController.routesToFollow[2].p2 = routePoints[5].position;
-        fishController.routesToFollow[2].p3 = routePoints[5].position;
-        fishController.routesToFollow[2].p4 = routePoints[0].position;
+        fishController.routesToFollow[0].p3 = routePoints[2].position;
+        fishController.routesToFollow[0].p4 = routePoints[3].position;
+        fishController.routesToFollow[1].p1 = routePoints[4].position;
+        fishController.routesToFollow[1].p2 = routePoints[5].position;
+        fishController.routesToFollow[1].p3 = routePoints[6].position;
+        fishController.routesToFollow[1].p4 = routePoints[7].position;
+        fishController.routesToFollow[2].p1 = routePoints[8].position;
+        fishController.routesToFollow[2].p2 = routePoints[9].position;
+        fishController.routesToFollow[2].p3 = routePoints[10].position;
+        fishController.routesToFollow[2].p4 = routePoints[11].position;
 
 
         fishController.OnRoutesGenerated();
@@ -156,15 +149,23 @@ public class RouteGenerator : MonoBehaviour
             farEdges = GetHalfColliderBounds(tank, true);
         }
 
-        nearEdges = nearEdges.OrderBy((d) => (d - transform.position).sqrMagnitude).ToArray();
-        farEdges = farEdges.OrderBy((d) => (d - transform.position).sqrMagnitude).ToArray();
+        nearEdges = nearEdges.OrderBy((d) => (d - start).sqrMagnitude).ToArray();
+        farEdges = farEdges.OrderBy((d) => (d - start).sqrMagnitude).ToArray();
 
         routePoints[0].position = start;
-        routePoints[1].position = nearEdges[2];
-        routePoints[2].position = Vector3.Lerp(start, nearEdges[3], 0.5f);
-        routePoints[3].position = farEdges[3];
-        routePoints[4].position = Vector3.Lerp(start, farEdges[1], 0.5f);
-        routePoints[5].position = farEdges[0];
+        routePoints[1].position = nearEdges[1];
+        routePoints[2].position = nearEdges[3];
+        routePoints[3].position = Vector3.Lerp(tank.center + Vector3.up * tank.bounds.extents.y, nearEdges[2], 0.5f);
+
+        routePoints[4].position = routePoints[3].position;
+        routePoints[5].position = Vector3.Lerp(tank.center + Vector3.up * tank.bounds.extents.y, nearEdges[0], 0.9f);
+        routePoints[6].position = farEdges[3];
+        routePoints[7].position = Vector3.Lerp(tank.center + Vector3.up * tank.bounds.extents.y, farEdges[1], 0.5f);
+
+        routePoints[8].position = routePoints[7].position;
+        routePoints[9].position = farEdges[0];
+        routePoints[10].position = Vector3.Lerp(start, nearEdges[0], 0.8f);
+        routePoints[11].position = start;
 
     }
 
@@ -204,5 +205,14 @@ public class RouteGenerator : MonoBehaviour
         return bounds;
     }
 
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(routePoints[1].position, 2f);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(routePoints[5].position, 2f);
+    }
+#endif
 
 }

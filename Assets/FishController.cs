@@ -17,7 +17,7 @@ public class FishController : MonoBehaviour
     [SerializeField] private float rotationSpeed = .1f;
     private int currentRoute;
     private int routesAmount;
-    public float tParam;
+    [HideInInspector] public float tParam;
     private Vector3 newPos;
     private bool isInCoroutine;
     private bool canSwim;
@@ -102,6 +102,23 @@ public class FishController : MonoBehaviour
     private void Grabbed()
     {
         canSwim = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        if (canSwim)
+        {
+            for (int i = 0; i < routesAmount; i++)
+            {
+                float t = 0;
+                while (t <= 1)
+                {
+                    Gizmos.DrawWireSphere(CalculateBezierPoint(routesToFollow[i].p1, routesToFollow[i].p2, routesToFollow[i].p3, routesToFollow[i].p4, t), 0.2f);
+                    t += 0.02f;
+                }
+            }
+        }
     }
 }
 
