@@ -12,20 +12,25 @@ public class Route
 public class FishController : MonoBehaviour
 {
     public Route[] routesToFollow;
+    [Range(0, 1)]
     [SerializeField] private float moveSpeed = .1f;
+    [SerializeField] private float rotationSpeed = .1f;
     private int currentRoute;
+    private int routesAmount;
     public float tParam;
     private Vector3 newPos;
     private bool isInCoroutine;
     private bool canSwim;
+    private float totalRouteDistance;
 
     private void Start()
     {
         currentRoute = 0;
         tParam = 0;
         isInCoroutine = false;
-        routesToFollow = new Route[2];
-        for (int i = 0; i < routesToFollow.Length; i++)
+        routesAmount = 3;
+        routesToFollow = new Route[routesAmount];
+        for (int i = 0; i < routesAmount; i++)
         {
             routesToFollow[i] = new Route();
         }
@@ -48,24 +53,25 @@ public class FishController : MonoBehaviour
         Vector3 p3 = routesToFollow[route].p3;
         Vector3 p4 = routesToFollow[route].p4;
 
+        float routeLenght = Vector3.Distance(p1, p2) + Vector3.Distance(p3, p4);
+        float speedNormalizer = totalRouteDistance / routeLenght;
+
         while (tParam < 1)
         {
-            tParam += Time.deltaTime * moveSpeed;
+            tParam += Time.deltaTime * (moveSpeed / 30) * speedNormalizer;
 
             newPos = CalculateBezierPoint(p1, p2, p3, p4, tParam);
 
             transform.position = newPos;
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(CalculateBezierPoint(p1, p2, p3, p4, Mathf.Clamp(tParam * 1.1f, 0, 1)) - transform.position), 1 * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(CalculateBezierPoint(p1, p2, p3, p4, Mathf.Clamp(tParam * 1.1f, 0, 1)) - transform.position), rotationSpeed * Time.deltaTime);
 
             yield return new WaitForEndOfFrame();
         }
         tParam = 0;
 
         currentRoute++;
-        if (currentRoute >= routesToFollow.Length)
-        {
+        if (currentRoute >= routesAmount)
             currentRoute = 0;
-        }
         isInCoroutine = false;
 
     }
@@ -86,6 +92,11 @@ public class FishController : MonoBehaviour
         tParam = 0;
         currentRoute = 0;
         isInCoroutine = false;
+        totalRouteDistance = 0;
+        for (int i = 0; i < routesAmount; i++)
+        {
+            totalRouteDistance += Vector3.Distance(routesToFollow[i].p1, routesToFollow[i].p2) + Vector3.Distance(routesToFollow[i].p3, routesToFollow[i].p4);
+        }
     }
 
     private void Grabbed()

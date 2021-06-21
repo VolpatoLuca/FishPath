@@ -534,6 +534,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3424440120014545871}
+  - component: {fileID: 1408141832}
   m_Layer: 0
   m_Name: Clown_Fish
   m_TagString: Untagged
@@ -558,6 +559,25 @@ Transform:
   m_Father: {fileID: 3105218881565134673}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!95 &1408141832
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2652020439183817077}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a95e500fed48f0142a4c2f3e740e380f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2758201863578041060
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,7 +696,7 @@ Transform:
   m_GameObject: {fileID: 3105218881565134677}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.279482, y: 3.1226635, z: -3.5408773}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.30699, y: 0.30699, z: 0.30699}
   m_Children:
   - {fileID: 3424440120014545871}
   m_Father: {fileID: 0}
@@ -694,7 +714,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6746fb44bf887d14cb17df1a5cf1cb06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.1
+  moveSpeed: 0.467
+  rotationSpeed: 2
+  tParam: 0.9098354
 --- !u!114 &3105218881565134672
 MonoBehaviour:
   m_ObjectHideFlags: 0
