@@ -153,18 +153,18 @@ public class RouteGenerator : MonoBehaviour
         farEdges = farEdges.OrderBy((d) => (d - start).sqrMagnitude).ToArray();
 
         routePoints[0].position = start;
-        routePoints[1].position = nearEdges[1];
-        routePoints[2].position = nearEdges[3];
+        routePoints[1].position = nearEdges[0];
+        routePoints[2].position = farEdges[3];
         routePoints[3].position = Vector3.Lerp(tank.bounds.center, nearEdges[2], 0.25f);
 
         routePoints[4].position = routePoints[3].position;
-        routePoints[5].position = Vector3.Lerp(tank.bounds.center, farEdges[0], 0.9f);
-        routePoints[6].position = Vector3.Lerp(tank.bounds.center, farEdges[3], 0.8f);
+        routePoints[5].position = Vector3.Lerp(tank.bounds.center, nearEdges[0], 0.9f);
+        routePoints[6].position = Vector3.Lerp(tank.bounds.center, farEdges[1], 0.8f);
         routePoints[7].position = Vector3.Lerp(tank.bounds.center, farEdges[1], 0.25f);
 
         routePoints[8].position = routePoints[7].position;
-        routePoints[9].position = nearEdges[0];
-        routePoints[10].position = Vector3.Lerp(start, farEdges[2], 0.8f);
+        routePoints[9].position = nearEdges[2];
+        routePoints[10].position = farEdges[3];
         routePoints[11].position = start;
 
     }
@@ -205,14 +205,14 @@ public class RouteGenerator : MonoBehaviour
         return bounds;
     }
 
-//#if UNITY_EDITOR
-//    private void OnDrawGizmos()
-//    {
-//        Gizmos.color = Color.white;
-//        Gizmos.DrawWireSphere(routePoints[1].position, 2f);
-//        Gizmos.color = Color.blue;
-//        Gizmos.DrawWireSphere(routePoints[5].position, 2f);
-//    }
-//#endif
+    //#if UNITY_EDITOR
+    //    private void OnDrawGizmos()
+    //    {
+    //        Gizmos.color = Color.white;
+    //        Gizmos.DrawWireSphere(routePoints[1].position, 2f);
+    //        Gizmos.color = Color.blue;
+    //        Gizmos.DrawWireSphere(routePoints[5].position, 2f);
+    //    }
+    //#endif
 
 }
