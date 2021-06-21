@@ -115,7 +115,7 @@ public class FishController : MonoBehaviour
                 while (t <= 1)
                 {
                     Gizmos.DrawWireSphere(CalculateBezierPoint(routesToFollow[i].p1, routesToFollow[i].p2, routesToFollow[i].p3, routesToFollow[i].p4, t), 0.2f);
-                    t += 0.02f;
+                    t += 0.01f;
                 }
             }
         }
